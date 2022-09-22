@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>sistem prediksi harga bahan pangan Indonesia</title>
-    <link rel="stylesheet" href="style/index.css">
+    <link rel="stylesheet" href="/static/style/index.css">
 </head>
 <body>
     <header class="headers">
@@ -16,7 +16,7 @@
                 <div class="card_1">
                     <div class="input_data">
                         <label for="">Jenis Bahan Pangan</label>
-                        <input list="data_pangan" name="data_pangan" id="data" placeholder="pilih salah satu">
+                        <input list="data_pangan" name="data_pangan" id="jenis_data_pangan" placeholder="pilih salah satu">
                         <datalist id="data_pangan">
                             <option value="Beras"></option>
                             <option value="Beras Kualitas Bawah 1"></option>
@@ -44,10 +44,10 @@
                     </div>
                     <div class="input_data">
                         <label for="">Tanggal</label>
-                        <input type="date">
+                        <input id="dates" type="date">
                     </div>
                     <div class="btn_prediksi">
-                        <input type="button" value="PREDIKSI" id="button_prediksi">
+                        <input id="btn_submit" type="button" value="PREDIKSI" id="button_prediksi">
                     </div>
                 </div>
         </section>
