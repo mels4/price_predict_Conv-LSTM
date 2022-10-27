@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Acme&family=Azeret+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:wght@100&display=swap');
 
+
+
 * {
     padding: 0;
     margin:0;
@@ -63,7 +65,7 @@ main {
     margin-top: 10%;
 }
 
-.btn_prediksi input[type="button"] {
+.btn_prediksi input[type="submit"] {
     width: 100%;
     height: 2.5rem;
     background-color: black;
@@ -75,7 +77,7 @@ main {
     cursor: pointer;
 }
 
-.btn_prediksi input[type="button"]:hover{
+.btn_prediksi input[type="submit"]:hover{
     background-color: grey;
 }
 
@@ -85,6 +87,60 @@ footer {
     left: 0; 
     right: 0;
     bottom: 1em;  
+}
+
+.cards{
+    display: flex;
+    position: absolute;
+    width: 10hmax;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.cards .card-popup{
+    background-color: navajowhite;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.card-popup img{
+    align-items: center;
+    width: 90%;
+    justify-content: center;
+}
+
+.card-popup #btn-close{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: white;
+    background-color: black;
+    border: 0;
+    border-radius: 50%;
+    font-size: large;
+    cursor: pointer;
+    transition: 0.5s;
+}
+.card-popup #btn-close:hover{
+    background-color: gray;
+}
+
+.card-popup .line{
+    margin-top: 2%;
+    width: 90%;
+    background: grey;
+    height: 1px;
+}
+
+.card-popup p{
+    text-align: center;
+    padding: 0 5% 0;
+}
+
+.progress{
+    display: none;
+    font-size: xx-large;
 }
 
 @media screen and (min-width: 640px){
