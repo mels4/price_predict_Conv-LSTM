@@ -60,7 +60,7 @@ const rendervalue =(msg) => {
         <div class="card-popup">
             <button id="btn-close">&times;</button>
             <h2>Hasil Prediksi</h2>
-            <img src="/plot" alt="plot predict">
+            <img src="" alt="plot predict">
             <div class="line"></div>
             <p>Prediksi harga ${msg.jenis_bahan}</p>
             <p id="value">

@@ -203,6 +203,7 @@ def make_prediction(train, test, val, date_start, date_end):
             data_in = data_in.reshape(1, -1)
             data_in = data_in.reshape((1, step, 1))
             predict = model.predict(data_in, verbose=0)
+            print(data_in)
             data_test.extend(predict[0].tolist())
             data_test= data_test[1:]
             data_out.extend(predict.tolist())
