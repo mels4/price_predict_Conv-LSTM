@@ -1,4 +1,5 @@
-from flask import Flask, render_template, jsonify, request, Response
+import json
+from flask import Flask, render_template, jsonify, request, Response, Markup
 
 import datetime
 import io
@@ -8,6 +9,11 @@ from sklearn.preprocessing import MinMaxScaler
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 from sklearn.model_selection import train_test_split
+from plotly.offline import plot
+from plotly.graph_objs import Scatter
+import plotly
+import plotly.express as px
+
 import matplotlib.pyplot as plt
 import pandas as pd
 import tensorflow as tf
@@ -32,7 +38,7 @@ def home():
 
 @app.route('/predict', methods=['GET', 'POST'])
 def predict_data():
-    global types, date, predicti, dates
+    global types, date, predicti, dates, my_plot, my_plot_2
 
     if request.method == "POST":
         date = request.form['date']
@@ -56,12 +62,19 @@ def predict_data():
         predicti = make_prediction(train, test, val, start_date, end_date)
 
         date_list = [start_date + datetime.timedelta(days=x) for x in range(day)]
-        dates = pd.DataFrame(predicted, index=date_list, columns=['predict'])
+        # dates = pd.DataFrame(predicted, index=date_list, columns=['predict'])
+        dates = pd.DataFrame(date_list, columns=['date'])
+        dates['predict'] = predicted
         print(dates)
-       
+
+        fig = px.scatter(dates, x='date', y='predict')
+
+        my_plot_2 = json.dumps(fig, cls= plotly.utils.PlotlyJSONEncoder)
+        print(my_plot_2)
+
         return render_template('index.html')
     else:
-        return jsonify({"predict": predicti, "jenis_bahan": types, "date": date, "message": "200"})
+        return jsonify({"predict": predicti, "jenis_bahan": types, "date": date, "message": "200", "plot": my_plot_2})
 
 
 def time_step_generator(data, time_size, batch_size, shuffle_data):
@@ -73,14 +86,6 @@ def time_step_generator(data, time_size, batch_size, shuffle_data):
     batch_window = shuffle_data.batch(batch_size).prefetch(1)
     
     return batch_window
-
-def forecast_predict(model, data, time_size, batch_size, shuffle_data):
-    generate_data = tf.data.Dataset.from_tensor_slices(data)
-    add_window_step = generate_data.window(time_size, shift=1, drop_remainder=True)
-    flatten_window = add_window_step.flat_map(lambda window: window.batch(time_size))
-    batch_window = flatten_window.batch(batch_size).prefetch(1)
-    model_predict = model.predict(batch_window)
-    return model_predict
 
 
 def chose_sector(type):
@@ -174,7 +179,7 @@ def make_prediction(train, test, val, date_start, date_end):
     ])
 
     model.compile(tf.keras.optimizers.Adam(learning_rate=1e-3), loss='mse', metrics=['mape', 'mae'])
-    history = model.fit(data_train, epochs=10, verbose=1, validation_data=data_val)
+    history = model.fit(data_train, epochs=5, verbose=1, validation_data=data_val)
     mae = history.history['mae']
     mape = history.history['mape']
 
@@ -189,9 +194,6 @@ def make_prediction(train, test, val, date_start, date_end):
     step = 234 
     i = 1
 
-    # a = test
-    # a = a.reshape((1, 1174, 1))
-    # print(a.shape)
     day = (date_end - date_start)
     day = day.days
     day = day + 2
@@ -217,20 +219,10 @@ def make_prediction(train, test, val, date_start, date_end):
             i= i+1
 
     predicted = scaler.inverse_transform(np.array(data_out).reshape(-1, 1))
-    output = str(predicted[-1])
+    output = int(predicted[-1])
     
     return output
 
-
-
-    # for i in range(day):
-    #     predict_list.append(model.predict(a)[0])
-    #     a = np.append(a[:, 1:, :],[[predict_list[i]]], axis=1)
-
-    # predicted = scaler.inverse_transform(np.array(predict_list).reshape(-1, 1))
-    # predicts = str(predicted[-1])
-
-    # return predicts
 
 plt.rcParams["figure.figsize"] = [7, 3.50]
 plt.rcParams["figure.autolayout"] = True    
@@ -245,7 +237,7 @@ def make_plot():
 def figures():
     fig = Figure()
     ax = fig.add_subplot(1, 1, 1)
-    ax.plot(dates.index, dates.predict.round())
+    ax.plot(dates.date, dates.predict.round())
     return fig
 
 
