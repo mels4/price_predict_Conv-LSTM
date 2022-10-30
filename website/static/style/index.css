@@ -142,42 +142,6 @@ footer {
     padding: 0 5% 0;
 }
 
-.progress{
-    display: none;
-    font-size: xx-large;
-}
-
-.loads{
-    /* display: none; */
-    width: 100%;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
-    background: rgba(90, 1, 2, 0.5);
-    display: flex;
-}
-.load-page{
-    /* display: none; */
-    justify-content: flex-start;
-    align-items: center;
-    top: 50%;
-    position: absolute;
-    background: rgba(90, 1, 2, 0.5);
-    padding: 0 5px;
-    display: flex;
-}
-.loader{
-    display: none;
-    border-radius: 50%;
-    border: 5px solid gainsboro;
-    border-top: 5px solid black;
-    width: 10vh;
-    height: 10vh;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
-}
-
-
 .spiner-page{
     width: 100%;
     height: 100%;
@@ -262,15 +226,6 @@ footer {
   } 
 
 
-@-webkit-keyframes spin{
-    0%{-webkit-transform: rotate(0deg);}
-    100%{-webkit-transform:rotate(360deg)}
-}
-
-@keyframes spin{
-    0%{ transform: rotate(0deg);}
-    100%{ transform: rotate(360deg);}
-}
 
 @media screen and (min-width: 640px){
     .headers h1{
