@@ -50,6 +50,13 @@ def predict_data():
         start_date = datetime.datetime.today()
         end_date = datetime.datetime.strptime(date, '%Y-%m-%d')
 
+        if(end_date == start_date):
+            print(start_date)
+        elif(end_date <= start_date):
+            print('tolong isi tanggal sesudah hari ini')
+        else:
+            print('a')
+
         sector_chose = chose_sector(type)
 
         x_train, x_test = train_test_split(sector_chose, test_size=0.2, random_state=False, shuffle=False)
@@ -74,7 +81,7 @@ def predict_data():
 
         return render_template('index.html')
     else:
-        return jsonify({"predict": predicti, "jenis_bahan": types, "date": date, "message": "200", "plot": my_plot_2})
+        return jsonify({"predict": predicti, "jenis_bahan": types, "date": date, "message": "200"})
 
 
 def time_step_generator(data, time_size, batch_size, shuffle_data):
