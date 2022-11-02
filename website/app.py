@@ -38,7 +38,7 @@ def home():
 
 @app.route('/predict', methods=['GET', 'POST'])
 def predict_data():
-    global types, date, predicti, dates, my_plot, my_plot_2
+    global types, date, predicti, dates, my_plot, my_plot_2, date_list, predicting
 
     if request.method == "POST":
         date = request.form['date']
@@ -72,17 +72,17 @@ def predict_data():
         # dates = pd.DataFrame(predicted, index=date_list, columns=['predict'])
         dates = pd.DataFrame(date_list, columns=['date'])
         dates['predict'] = predicted
-        print(dates)
+
+        j_str = json.dumps({'n': predicted.tolist()})
+        print(j_str)
 
         fig = px.scatter(dates, x='date', y='predict')
 
         my_plot_2 = json.dumps(fig, cls= plotly.utils.PlotlyJSONEncoder)
-        print(my_plot_2)
 
         return render_template('index.html')
     else:
         return jsonify({"predict": predicti, "jenis_bahan": types, "date": date, "message": "200"})
-
 
 def time_step_generator(data, time_size, batch_size, shuffle_data):
     generate_data = tf.data.Dataset.from_tensor_slices(data)
@@ -247,6 +247,9 @@ def figures():
     ax.plot(dates.date, dates.predict.round())
     return fig
 
+@app.route('/info')
+def info():
+    return (render_template('popups.html'))
 
 if __name__ == '__main__':
     app.run(debug=True)
